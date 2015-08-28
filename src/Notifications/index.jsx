@@ -1,5 +1,6 @@
 import postoffice from "postal";
 import Notification from "./views/Notification.jsx";
+import css from "./views/NotificationCSS.css";
 
 export default class PostOffice extends React.Component {
   constructor(props) {
@@ -10,7 +11,10 @@ export default class PostOffice extends React.Component {
     postoffice.subscribe({
       channel: "notification",
       topic: "test",
-      callback: (data) => { this._publishMessage(data); },
+      callback: (data) => {
+        data.className = css.arrive;
+        this._publishMessage(data);
+      },
     });
 
     postoffice.subscribe({

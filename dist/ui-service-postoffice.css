@@ -1,3 +1,19 @@
+.NotificationCSS__arrive____rFEa {
+  -webkit-transition: all .4s;
+          transition: all .4s;
+  -webkit-transform: translateX(400px) !important;
+      -ms-transform: translateX(400px) !important;
+          transform: translateX(400px) !important;
+}
+
+.NotificationCSS__show___27PAL {
+  -webkit-transition: all .4s;
+          transition: all .4s;
+  -webkit-transform: translateX(0px) !important;
+      -ms-transform: translateX(0px) !important;
+          transform: translateX(0px) !important;
+}
+
 .NotificationCSS__expire___3c1dh {
   -webkit-transition: all .4s;
           transition: all .4s;

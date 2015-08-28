@@ -13092,6 +13092,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _viewsNotificationJsx2 = _interopRequireDefault(_viewsNotificationJsx);
 
+	var _viewsNotificationCSSCss = __webpack_require__(8);
+
+	var _viewsNotificationCSSCss2 = _interopRequireDefault(_viewsNotificationCSSCss);
+
 	var PostOffice = (function (_React$Component) {
 	  _inherits(PostOffice, _React$Component);
 
@@ -13111,6 +13115,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        channel: "notification",
 	        topic: "test",
 	        callback: function callback(data) {
+	          data.className = _viewsNotificationCSSCss2["default"].arrive;
 	          _this._publishMessage(data);
 	        }
 	      });
@@ -13184,7 +13189,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _classCallCheck(this, NotificationView);
 
 	    _get(Object.getPrototypeOf(NotificationView.prototype), "constructor", this).call(this, props);
-	    this.state = { messages: [], updated_at: moment().toISOString() };
+	    this.state = { messages: props.messages, updated_at: moment().toISOString() };
 
 	    this._onDismissClick = this._onDismissClick.bind(this);
 	  }
@@ -13194,11 +13199,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function componentDidMount() {
 	      var _this = this;
 
-	      this.setState({ messages: this.props.messages });
 	      var checkMessages = window.setInterval(function () {
 	        _this.state.messages.forEach(function (message, i) {
 	          if (moment().isAfter(message.visible_until)) {
 	            _this._expireMessage(message);
+	          }
+
+	          if (message.className === _NotificationCSSCss2["default"].arrive) {
+	            message.className = _NotificationCSSCss2["default"].show;
+	            _this._showMessage(message);
 	          }
 	        });
 
@@ -13213,26 +13222,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }, 500);
 	    }
 	  }, {
-	    key: "componentDidUnmount",
-	    value: function componentDidUnmount() {
-	      console.log("unmount");
-	    }
-	  }, {
 	    key: "_onDismissClick",
 	    value: function _onDismissClick(e) {
 	      var idx = e.currentTarget.getAttribute("data-idx");
 	      var message = this.state.messages[idx];
 	      message.visible_until = moment();
-
 	      this._expireMessage(message);
+	    }
+	  }, {
+	    key: "_showMessage",
+	    value: function _showMessage(message) {
+	      var messages = this.state.messages;
+	      var idx = _.findIndex(messages, message);
+	      messages[idx] = message;
+	      this.setState({ messages: messages, updated_at: moment().toISOString() });
 	    }
 	  }, {
 	    key: "_expireMessage",
 	    value: function _expireMessage(message) {
 	      var messages = this.state.messages;
-	      if (message.className) {
+	      if (message.expired) {
 	        _.pull(messages, message);
 	      }
+	      message.expired = true;
 	      message.className = _NotificationCSSCss2["default"].expire;
 	      this.setState({ messages: messages, updated_at: moment().toISOString() });
 	    }
@@ -13261,10 +13273,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.state.messages.map(function (message, i) {
 	          return React.createElement(
 	            "li",
-	            { key: i, style: notificationStyles(message), className: message.className },
+	            {
+	              key: i,
+	              style: notificationStyles(message),
+	              className: message.className,
+	              "data-idx": i,
+	              onClick: _this2._onDismissClick },
 	            React.createElement(
 	              "div",
-	              { style: _NotificationStyles2["default"].close, "data-idx": i, onClick: _this2._onDismissClick },
+	              { style: _NotificationStyles2["default"].close },
 	              React.createElement(
 	                "i",
 	                { className: "material-icons" },
@@ -13381,7 +13398,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"expire":"NotificationCSS__expire___3c1dh"};
+	module.exports = {"arrive":"NotificationCSS__arrive____rFEa","show":"NotificationCSS__show___27PAL","expire":"NotificationCSS__expire___3c1dh"};
 
 /***/ }
 /******/ ])
