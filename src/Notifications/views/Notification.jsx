@@ -7,7 +7,7 @@ export default class NotificationView extends React.Component {
     super(props);
     this.state = { messages: props.messages, updated_at: moment().toISOString() };
 
-    this._onDismissClick = this._onDismissClick.bind(this)
+    this._onDismissClick = this._onDismissClick.bind(this);
   }
   componentDidMount() {
     let checkMessages = window.setInterval(() => {
