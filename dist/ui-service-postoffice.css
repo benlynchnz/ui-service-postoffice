@@ -1,0 +1,7 @@
+.NotificationCSS__expire___3c1dh {
+  -webkit-transition: all .4s;
+          transition: all .4s;
+  -webkit-transform: translateX(400px);
+      -ms-transform: translateX(400px);
+          transform: translateX(400px);
+}

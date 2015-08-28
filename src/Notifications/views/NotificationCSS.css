@@ -1,0 +1,4 @@
+.expire {
+  transition: all .4s;
+  transform: translateX(400px);
+}
