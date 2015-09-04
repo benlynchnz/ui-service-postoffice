@@ -1,6 +1,8 @@
 import postal from "postal";
 import Notifications from "./Notifications/index.jsx";
 
-React.render(<Notifications/>, document.getElementById("post-office"));
+let el = document.getElementsByTagName("ui-core-postoffice")[0];
+
+React.render(<Notifications element={el}/>, el);
 
 window.POST_OFFICE = postal;

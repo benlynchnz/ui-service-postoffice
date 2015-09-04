@@ -1,3 +1,13 @@
+.wrapper {
+  width: 300px;
+  position: fixed;
+  margin: 0;
+  padding: 0;
+  top: 68px;
+  right: 50px;
+  list-style: none;
+}
+
 .arrive {
   transition: all .4s;
   transform: translateX(400px) !important;

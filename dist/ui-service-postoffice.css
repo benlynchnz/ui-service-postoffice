@@ -1,3 +1,13 @@
+.NotificationCSS__wrapper___3s21H {
+  width: 300px;
+  position: fixed;
+  margin: 0;
+  padding: 0;
+  top: 68px;
+  right: 50px;
+  list-style: none;
+}
+
 .NotificationCSS__arrive____rFEa {
   -webkit-transition: all .4s;
           transition: all .4s;

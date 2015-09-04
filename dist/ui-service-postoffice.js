@@ -66,7 +66,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _NotificationsIndexJsx2 = _interopRequireDefault(_NotificationsIndexJsx);
 
-	React.render(React.createElement(_NotificationsIndexJsx2["default"], null), document.getElementById("post-office"));
+	var el = document.getElementsByTagName("ui-core-postoffice")[0];
+
+	React.render(React.createElement(_NotificationsIndexJsx2["default"], { element: el }), el);
 
 	window.POST_OFFICE = _postal2["default"];
 
@@ -13096,6 +13098,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _viewsNotificationCSSCss2 = _interopRequireDefault(_viewsNotificationCSSCss);
 
+	var _utils = __webpack_require__(9);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
 	var PostOffice = (function (_React$Component) {
 	  _inherits(PostOffice, _React$Component);
 
@@ -13103,7 +13109,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _classCallCheck(this, PostOffice);
 
 	    _get(Object.getPrototypeOf(PostOffice.prototype), "constructor", this).call(this, props);
-	    this.state = { messages: [] };
+	    this.state = {
+	      messages: [],
+	      style: {
+	        position: "fixed",
+	        top: 0
+	      }
+	    };
 	  }
 
 	  _createClass(PostOffice, [{
@@ -13127,12 +13139,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	          _this.setState({ messages: [] });
 	        }
 	      });
+
+	      return _utils2["default"].componentDidMount(this);
+	    }
+	  }, {
+	    key: "_updateState",
+	    value: function _updateState(props) {
+	      if (props.top) {
+	        var style = this.state.style;
+	        style.top = Number(props.top);
+	        this.setState({ style: style });
+	      }
 	    }
 	  }, {
 	    key: "_publishMessage",
 	    value: function _publishMessage(message) {
+	      var expiresAt = moment().add(5, "seconds");
+	      if (message.expires && message.expires < 0) {
+	        expiresAt = moment().add(1, "day");
+	      } else if (message.expires && !Number.isNaN(message.expires)) {
+	        expiresAt = moment().add(message.expires, "seconds");
+	      }
+	      delete message.expires;
 	      message.received_at = moment();
-	      message.visible_until = moment().add(message.expires || 5, "seconds");
+	      message.visible_until = expiresAt;
 	      var messages = this.state.messages;
 	      messages.push(message);
 	      this.setState({ messages: messages });
@@ -13190,7 +13220,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    _get(Object.getPrototypeOf(NotificationView.prototype), "constructor", this).call(this, props);
 	    this.state = { messages: props.messages, updated_at: moment().toISOString() };
-
 	    this._onDismissClick = this._onDismissClick.bind(this);
 	  }
 
@@ -13269,34 +13298,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 	      return React.createElement(
 	        "ul",
-	        { style: _NotificationStyles2["default"].wrapper },
+	        { style: this.props.style, className: _NotificationCSSCss2["default"].wrapper },
 	        this.state.messages.map(function (message, i) {
 	          return React.createElement(
 	            "li",
 	            {
 	              key: i,
-	              style: notificationStyles(message),
+	              style: _NotificationStyles2["default"].messageWrapper,
 	              className: message.className,
 	              "data-idx": i,
 	              onClick: _this2._onDismissClick },
 	            React.createElement(
 	              "div",
-	              { style: _NotificationStyles2["default"].close },
+	              { style: notificationStyles(message) },
 	              React.createElement(
-	                "i",
-	                { className: "material-icons" },
-	                "close"
+	                "div",
+	                { style: _NotificationStyles2["default"].close },
+	                React.createElement(
+	                  "i",
+	                  { className: "material-icons" },
+	                  "close"
+	                )
+	              ),
+	              React.createElement(
+	                "div",
+	                { style: _NotificationStyles2["default"].title },
+	                message.title
+	              ),
+	              React.createElement(
+	                "div",
+	                { style: _NotificationStyles2["default"].message },
+	                message.message
 	              )
-	            ),
-	            React.createElement(
-	              "div",
-	              { style: _NotificationStyles2["default"].title },
-	              message.title
-	            ),
-	            React.createElement(
-	              "div",
-	              { style: _NotificationStyles2["default"].message },
-	              message.message
 	            )
 	          );
 	        })
@@ -13331,14 +13364,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var font = "'Roboto' sans-serif";
 
 	var styles = {
-	  wrapper: {
-	    width: 300,
-	    position: "fixed",
-	    top: 20,
-	    right: 20,
+	  messageWrapper: {
+	    backgroundColor: "#f8f8f8",
 	    margin: 0,
-	    padding: 0,
-	    listStyle: "none"
+	    padding: 0
 	  },
 	  notificationWrapperRed: {
 	    fontFamily: font,
@@ -13381,7 +13410,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    fontSize: 16,
 	    fontWeight: 400,
 	    color: "rgba(0,0,0,0.87)",
-	    paddingBottom: 8
+	    paddingBottom: 12,
+	    maxWidth: 250,
+	    textOverflow: "ellipsis",
+	    whiteSpace: "nowrap",
+	    overflow: "hidden"
 	  },
 	  message: {
 	    fontSize: 12,
@@ -13398,7 +13431,46 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"arrive":"NotificationCSS__arrive____rFEa","show":"NotificationCSS__show___27PAL","expire":"NotificationCSS__expire___3c1dh"};
+	module.exports = {"wrapper":"NotificationCSS__wrapper___3s21H","arrive":"NotificationCSS__arrive____rFEa","show":"NotificationCSS__show___27PAL","expire":"NotificationCSS__expire___3c1dh"};
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var utils = {};
+
+	var componentDidMount = function componentDidMount(ctx) {
+	  var rootNode = React.findDOMNode(ctx),
+	      hasNextProps = false,
+	      nextProps = {},
+	      parentNode = rootNode.parentNode;
+
+	  Object.keys(parentNode.attributes).forEach(function (key) {
+	    var namedNode = undefined;
+
+	    if (key !== "length") {
+	      hasNextProps = true;
+	      namedNode = parentNode.attributes[key];
+	      nextProps[namedNode.name] = namedNode.value;
+	    }
+	  });
+
+	  if (hasNextProps) {
+	    ctx._updateState(nextProps);
+	  }
+
+	  ctx.setState({ element: ctx.props.element });
+	};
+
+	utils.componentDidMount = componentDidMount;
+
+	exports["default"] = utils;
+	module.exports = exports["default"];
 
 /***/ }
 /******/ ])

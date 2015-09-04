@@ -10,14 +10,10 @@ const blueOpaque = "rgba(52,152,219,0.05)";
 const font = "'Roboto' sans-serif";
 
 const styles = {
-  wrapper: {
-    width: 300,
-    position: "fixed",
-    top: 20,
-    right: 20,
+  messageWrapper: {
+    backgroundColor: "#f8f8f8",
     margin: 0,
     padding: 0,
-    listStyle: "none",
   },
   notificationWrapperRed: {
     fontFamily: font,
@@ -60,7 +56,11 @@ const styles = {
     fontSize: 16,
     fontWeight: 400,
     color: "rgba(0,0,0,0.87)",
-    paddingBottom: 8,
+    paddingBottom: 12,
+    maxWidth: 250,
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
   },
   message: {
     fontSize: 12,

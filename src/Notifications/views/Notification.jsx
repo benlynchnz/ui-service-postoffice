@@ -6,7 +6,6 @@ export default class NotificationView extends React.Component {
   constructor(props) {
     super(props);
     this.state = { messages: props.messages, updated_at: moment().toISOString() };
-
     this._onDismissClick = this._onDismissClick.bind(this);
   }
   componentDidMount() {
@@ -68,18 +67,20 @@ export default class NotificationView extends React.Component {
         return styles.notificationWrapperBlue;
       }
     };
-    return (<ul style={styles.wrapper}>
+    return (<ul style={this.props.style} className={css.wrapper}>
       {this.state.messages.map((message, i) => {
         return (
           <li
             key={i}
-            style={notificationStyles(message)}
+            style={styles.messageWrapper}
             className={message.className}
             data-idx={i}
             onClick={this._onDismissClick}>
-            <div style={styles.close}><i className="material-icons">close</i></div>
-            <div style={styles.title}>{message.title}</div>
-            <div style={styles.message}>{message.message}</div>
+            <div style={notificationStyles(message)}>
+              <div style={styles.close}><i className="material-icons">close</i></div>
+              <div style={styles.title}>{message.title}</div>
+              <div style={styles.message}>{message.message}</div>
+            </div>
           </li>
         );
       })}

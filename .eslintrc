@@ -28,6 +28,14 @@
     "globalReturn": true,
     "jsx": true
   },
+  "globals": {
+    "React": true,
+    "_": true,
+    "moment": true,
+    "CustomEvent": true,
+    "document": true,
+    "analytics": true
+  },
   "parser": "babel-eslint",
   "plugins": [
     "react",
