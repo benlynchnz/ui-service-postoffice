@@ -46,6 +46,12 @@ export default class PostOffice extends React.Component {
     } else if (message.expires && !Number.isNaN(message.expires)) {
       expiresAt = moment().add(message.expires, "seconds");
     }
+    if (message.can_dismiss === false) {
+      message.can_dismiss = false;
+      expiresAt = moment().add(1, "day");
+    } else {
+      message.can_dismiss = true;
+    }
     delete message.expires;
     message.received_at = moment();
     message.visible_until = expiresAt;

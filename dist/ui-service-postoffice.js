@@ -13160,6 +13160,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      } else if (message.expires && !Number.isNaN(message.expires)) {
 	        expiresAt = moment().add(message.expires, "seconds");
 	      }
+	      if (message.can_dismiss === false) {
+	        message.can_dismiss = false;
+	        expiresAt = moment().add(1, "day");
+	      } else {
+	        message.can_dismiss = true;
+	      }
 	      delete message.expires;
 	      message.received_at = moment();
 	      message.visible_until = expiresAt;
@@ -13255,6 +13261,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function _onDismissClick(e) {
 	      var idx = e.currentTarget.getAttribute("data-idx");
 	      var message = this.state.messages[idx];
+	      if (!message.can_dismiss) {
+	        return;
+	      }
 	      message.visible_until = moment();
 	      this._expireMessage(message);
 	    }
@@ -13311,7 +13320,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            React.createElement(
 	              "div",
 	              { style: notificationStyles(message) },
-	              React.createElement(
+	              message.can_dismiss ? React.createElement(
 	                "div",
 	                { style: _NotificationStyles2["default"].close },
 	                React.createElement(
@@ -13319,12 +13328,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	                  { className: "material-icons" },
 	                  "close"
 	                )
-	              ),
-	              React.createElement(
+	              ) : null,
+	              message.title ? React.createElement(
 	                "div",
 	                { style: _NotificationStyles2["default"].title },
 	                message.title
-	              ),
+	              ) : null,
 	              React.createElement(
 	                "div",
 	                { style: _NotificationStyles2["default"].message },
